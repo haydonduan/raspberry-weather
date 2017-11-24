@@ -10,7 +10,8 @@ var exec = require('child_process').exec;
 var mp3File = 'weather.mp3'
 
 function generateMp3(text) {
-  client.text2audio(text, {spd: 5, per: 1}).then(function(result) {
+  //  0为普通女声，1为普通男生，3为情感合成-度逍遥，4为情感合成-度丫丫
+  client.text2audio(text, {spd: 4, per: 2}).then(function(result) {
     fs.writeFileSync(mp3File, result.data);
   }).then(function() {
     exec('play '+ mp3File, function(err,stdout,stderr){
@@ -26,15 +27,14 @@ jsdom.env({
   scripts: ["http://code.jquery.com/jquery.js"],
   done: function (errors, window) {
     var $ = window.$;
-    var text = $($(".wea")[0]).text();
-    $('.livezs .hot').forEach(function(item) {
-      var details = _.filter(hot.text().split('\n'), function(x){return !_.isEmpty(x)})
+    var text = $($(".wea")[0]).text() + '。。。。。以下是生活指数:';
+    _.forEach($('.livezs .hot'), function(item, index) {
+      var details = _.filter($(item).text().split('\n'), function(x){return !_.isEmpty(x)})
       var title = details[1];
       var subTitle = details[0];
       var description = details[2];
-      text = text + ';' + title + ':' + subTitle + description;
+      text = text + (index + 1) + ':' + title + ':' + subTitle + ',' + description;
     });
-
 
     generateMp3('今天北京天气：' + text);
   }
