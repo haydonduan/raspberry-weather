@@ -1,6 +1,7 @@
 var jsdom = require("node-jsdom");
 var AipSpeechClient = require("./aip-node-sdk-1.2.1").speech;
 var fs=require('fs');
+var _=require('lodash');
 var APP_ID = "10374492";
 var API_KEY = "NSw1KN1fQZI46ByFl2QcakIE";
 var SECRET_KEY = "5c36305c729df55b8bea4c570fae81fa";
@@ -26,6 +27,15 @@ jsdom.env({
   done: function (errors, window) {
     var $ = window.$;
     var text = $($(".wea")[0]).text();
+    $('.livezs .hot').forEach(function(item) {
+      var details = _.filter(hot.text().split('\n'), function(x){return !_.isEmpty(x)})
+      var title = details[1];
+      var subTitle = details[0];
+      var description = details[2];
+      text = text + ';' + title + ':' + subTitle + description;
+    });
+
+
     generateMp3('今天北京天气：' + text);
   }
 });
