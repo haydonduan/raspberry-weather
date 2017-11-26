@@ -2,9 +2,11 @@ var jsdom = require("node-jsdom");
 var AipSpeechClient = require("./aip-node-sdk-1.2.1").speech;
 var fs=require('fs');
 var _=require('lodash');
-var client = new AipSpeechClient(APP_ID, API_KEY, SECRET_KEY);
 var exec = require('child_process').exec;
 var mp3File = 'weather.mp3'
+
+// key..
+var client = new AipSpeechClient(APP_ID, API_KEY, SECRET_KEY);
 
 function generateMp3(text) {
   //  0为普通女声，1为普通男生，3为情感合成-度逍遥，4为情感合成-度丫丫
@@ -33,6 +35,8 @@ jsdom.env({
       text = text + (index + 1) + ':' + title + ':' + subTitle + ',' + description;
     });
 
-    generateMp3('今天北京天气：' + text);
+    var time = new Date();
+    var timeTips = '现在时间:' + time.getHours() + '点，'+ time.getMinutes() + '分；';
+    generateMp3('亲爱的西西公主，'+ timeTips + text);
   }
 });
